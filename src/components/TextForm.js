@@ -2,17 +2,21 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 export default function TextForm(props) {
+  const [isClicked, setIsClicked] = useState(false);
+
   const [bgColor, setBgColor] = useState("white");
 
   const handleUpClick = () => {
     // console.log("uppercase was clicked" + text);
     let newText = text.toUpperCase();
     setText(newText);
+    props.showAlert("Text was converted to Upper Case", "success");
   };
 
   const handleLowClick = () => {
     let newText = text.toLowerCase();
     setText(newText);
+    props.showAlert("Text was converted to lower case", "success");
   };
 
   const handleOnChange = (event) => {
@@ -21,18 +25,13 @@ export default function TextForm(props) {
 
   const handleClearClick = () => {
     setText("");
+    props.showAlert("Text was Cleared", "success");
   };
 
   let clicked = true;
   const handleChangeColor = () => {
-    if (clicked === true) {
-      document.getElementById("myBox").style.backgroundColor = "red";
-      clicked = false;
-    } else if (clicked === false) {
-      document.getElementById("myBox").style.backgroundColor =
-        props.mode === "dark" ? "#2e2c2c" : "white";
-      clicked = true;
-    }
+    setIsClicked(!isClicked);
+    props.showAlert("Color was changed", "success");
   };
 
   const [text, setText] = useState("");
@@ -53,6 +52,11 @@ export default function TextForm(props) {
             style={{
               backgroundColor: props.mode === "dark" ? "#2e2c2c" : "white",
               color: props.mode === "dark" ? "white" : "black",
+              backgroundColor: isClicked
+                ? "red"
+                : props.mode === "dark"
+                ? "#2e2c2c"
+                : "white",
             }}
             id="myBox"
             rows="6"
